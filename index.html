@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d17">
+  <meta name="description" content="Acci-Decode interactive accident investigation and vehicle telemetry demo.">
+  <title>Acci-Decode | Accident Intelligence Platform</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#" aria-label="Acci-Decode home">
+    <span class="brand-mark">A<span>D</span></span>
+    <span><strong>ACCI<span class="accent">-DECODE</span></strong><small>ACCIDENT INTELLIGENCE PLATFORM</small></span>
+  </a>
+  <div class="top-status"><span class="pulse"></span> Simulator ready <span class="tag">DEMO ENVIRONMENT</span></div>
+</header>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="side-label">WORKSPACE</div>
+    <button class="nav active" data-page="overview">▦ <span>Investigation overview</span></button>
+    <button class="nav" data-page="reconstruction">⌁ <span>Accident reconstruction</span></button>
+    <button class="nav" data-page="telemetry">⌁ <span>Sensor telemetry</span></button>
+    <button class="nav" data-page="events">◷ <span>Event timeline</span></button>
+    <button class="nav" data-page="reports">▤ <span>Reports &amp; findings</span></button>
+    <div class="case-card"><strong>Demo case</strong><small>ACD-2026-0042</small><span><i class="pulse"></i> Synthetic data loaded</span></div>
+    <div class="sidebar-foot">ACCIDENT INTELLIGENCE<br>Prototype v0.1.0</div>
+  </aside>
+  <main class="main">
+    <div class="page-heading">
+      <div><div class="eyebrow">CASE FILE / ACD-2026-0042</div><h1 id="page-title">Investigation overview</h1><p id="page-subtitle">Explore a simulated vehicle incident and its sensor evidence.</p></div>
+      <button id="reset" class="button">↻ Reset demo</button>
+    </div>
+
+    <section id="overview" class="page active">
+      <div class="metrics">
+        <article class="panel metric-card"><span>Peak acceleration</span><strong id="peak">4.8 <small>g</small></strong><em>Illustrative impact peak</em></article>
+        <article class="panel metric-card"><span>Vehicle speed</span><strong id="speedmetric">48 <small>km/h</small></strong><em>At selected timestamp</em></article>
+        <article class="panel metric-card"><span>Data channels</span><strong>6</strong><em>Simulated sensor feeds</em></article>
+        <article class="panel metric-card"><span>Case status</span><strong class="warning">In review</strong><em>Investigator validation needed</em></article>
+      </div>
+      <div class="overview-grid">
+        <article class="panel reconstruction-card">
+          <div class="panel-heading"><div><h2>Incident reconstruction</h2><p>Illustrative road geometry · not a real location</p></div><span class="tag">SIMULATION</span></div>
+          <div class="map-wrap">
+            <svg id="roadmap" viewBox="0 0 600 330" role="img" aria-label="Schematic accident reconstruction map">
+              <defs><pattern id="gridp" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#1a2938" stroke-width="1"/></pattern></defs>
+              <rect width="600" height="330" fill="url(#gridp)"/>
+              <path d="M-25 90 L170 142 L360 166 L635 258" fill="none" stroke="#26364a" stroke-width="94"/>
+              <path d="M-25 90 L170 142 L360 166 L635 258" fill="none" stroke="#657184" stroke-width="2" stroke-dasharray="14 12"/>
+              <path d="M120 -20 L170 142 L240 360" fill="none" stroke="#26364a" stroke-width="48"/>
+              <path d="M120 -20 L170 142 L240 360" fill="none" stroke="#657184" stroke-width="2" stroke-dasharray="10 10"/>
+              <path d="M-25 90 L170 142 L360 166 L635 258" fill="none" stroke="#3adac4" stroke-width="2" stroke-dasharray="5 7" opacity=".65"/>
+              <circle cx="170" cy="142" r="7" fill="#53e5d0"/><circle cx="170" cy="142" r="18" fill="none" stroke="#53e5d0" opacity=".5"/>
+              <text x="187" y="129" fill="#a5f9eb" font-size="11">Vehicle A</text>
+              <g id="vehicle-marker" transform="translate(170 142) rotate(10)"><rect x="-17" y="-8" width="34" height="16" rx="5" fill="#54e7d3" stroke="#e3fffb" stroke-width="1.5"/><rect x="-9" y="-6" width="15" height="12" rx="2" fill="#15343c"/><path d="M14 -4L21 0L14 4Z" fill="#54e7d3"/></g>
+              <g id="impact-marker"><circle cx="345" cy="164" r="18" fill="#f59e62" opacity=".12"/><circle cx="345" cy="164" r="9" fill="none" stroke="#f59e62" stroke-width="2"/><path d="M339 158L351 170M351 158L339 170" stroke="#f59e62" stroke-width="2"/><text x="359" y="153" fill="#ffc48e" font-size="11">Event point</text></g>
+              <text x="20" y="28" fill="#7c92a9" font-size="10">SCHEMATIC VIEW</text><text x="20" y="310" fill="#7c92a9" font-size="10">GPS PATH · SYNTHETIC COORDINATES</text>
+            </svg>
+          </div>
+          <div class="playback-row"><div>Incident playback <strong id="clock">−1.5 s</strong></div><div class="button-group"><button id="play" class="button primary">▶ Play</button><button id="pause" class="button">Ⅱ Pause</button></div></div>
+          <input id="timeline" type="range" min="0" max="100" value="35" aria-label="Incident playback timeline">
+          <div class="range-labels"><span>−5 sec</span><span>Event point</span><span>+5 sec</span></div>
+        </article>
+        <article class="panel observations">
+          <div class="panel-heading"><div><h2>Event observations</h2><p>Synthetic signals for demonstration</p></div></div>
+          <div class="event"><div><strong>Pre-event movement</strong><time>−5.0 s</time></div><p>Vehicle in motion; baseline established.</p></div>
+          <div class="event"><div><strong>Abrupt deceleration</strong><time class="warning">−0.4 s</time></div><p>Longitudinal acceleration changes rapidly.</p></div>
+          <div class="event"><div><strong>Peak signal</strong><time class="warning">0.0 s</time></div><p>Illustrative IMU spike detected.</p></div>
+          <div class="event"><div><strong>Post-event state</strong><time>+2.0 s</time></div><p>Compare speed, orientation and GPS evidence.</p></div>
+          <button class="button full" data-goto="telemetry">Explore sensor telemetry →</button>
+        </article>
+      </div>
+      <article class="panel chart-panel"><div class="panel-heading"><div><h2>Sensor signal preview</h2><p>Illustrative longitudinal acceleration</p></div><span class="tag">IMU / ACCEL</span></div><svg id="chart" viewBox="0 0 700 150" role="img" aria-label="Synthetic acceleration signal chart"></svg><div class="chart-legend"><span>━ Acceleration X</span><span>Sample data only · not measured vehicle telemetry</span></div></article>
+    </section>
+
+    <section id="reconstruction" class="page">
+      <article class="panel padded">
+        <h2>Reconstruction workbench</h2><p class="muted">Adjust scenario parameters to explore a hypothetical incident. This is a conceptual simulation, not a validated crash-physics engine.</p>
+        <div class="form-grid">
+          <label>Initial speed (km/h)<div class="slider-head"><span>Vehicle A</span><strong id="initial-out">60 km/h</strong></div><input id="initial-speed" type="range" min="10" max="120" value="60"></label>
+          <label>Braking onset before event<div class="slider-head"><span>Time interval</span><strong id="brake-out">1.5 sec</strong></div><input id="brake-time" type="range" min="0" max="5" step=".5" value="1.5"></label>
+          <label>Surface condition<select id="surface"><option value="dry">Dry road</option><option value="wet">Wet road</option><option value="loose">Loose gravel</option></select></label>
+          <label>Scenario<select id="scenario"><option value="brake">Sudden braking</option><option value="impact">Hypothetical collision</option><option value="swerve">Sudden steering manoeuvre</option></select></label>
+        </div>
+        <button id="simulate" class="button primary top-gap">Run scenario preview ↗</button>
+      </article>
+      <article id="sim-result" class="panel padded top-gap"><div class="eyebrow">SCENARIO OUTPUT</div><h2 id="sim-heading" class="result-heading">Ready to explore</h2><p id="sim-text" class="muted">Set your inputs and run a scenario to display a conceptual result.</p><div class="result-metrics"><div><span>Initial speed</span><strong id="sim-speed">60 km/h</strong></div><div><span>Surface</span><strong id="sim-surface">Dry</strong></div><div><span>Scenario</span><strong id="sim-type">Braking</strong></div></div></article>
+    </section>
+
+    <section id="telemetry" class="page">
+      <div class="metrics telemetry-metrics">
+        <article class="panel metric-card"><span>Accelerometer X</span><strong id="tx">−0.20 g</strong></article>
+        <article class="panel metric-card"><span>Gyroscope Z</span><strong id="tz">4.1 <small>°/s</small></strong></article>
+        <article class="panel metric-card"><span>GPS speed</span><strong id="ts">48 <small>km/h</small></strong></article>
+      </div>
+      <article class="panel padded"><div class="panel-heading"><div><h2>Telemetry explorer</h2><p>Move the incident slider on the overview to inspect different synthetic timestamps.</p></div><button id="refresh" class="button">↻ Update sample</button></div><div id="telemetry-lines" class="telemetry-lines"></div><p class="muted top-gap">Proposed integrations: MPU6050 · GPS Neo-6M · OBD-II / ELM327 · MongoDB event store.</p></article>
+    </section>
+
+    <section id="events" class="page"><article class="panel padded"><h2>Evidence timeline</h2><p class="muted">Illustrative event sequence · relative to t = 0</p><div id="eventlist" class="event-list"></div><p class="muted top-gap">Events must be derived from synchronized source data before being used as investigative evidence.</p></article></section>
+
+    <section id="reports" class="page"><article class="panel padded"><div class="report-header"><div><div class="eyebrow">CASE ACD-2026-0042</div><h2 class="result-heading">Preliminary incident summary</h2></div><span class="tag">DRAFT</span></div><p class="muted">This report is generated from illustrative scenario data only. It contains no verified accident findings.</p><hr><h3>Sections</h3><ul class="report-list"><li>Case metadata and vehicle information</li><li>Time-synchronized sensor evidence</li><li>GPS trajectory and vehicle motion</li><li>Event detection and uncertainty assessment</li><li>Investigator observations and conclusions</li></ul><div class="button-group top-gap"><button id="export-report" class="button primary">Export demo summary (.txt)</button><button id="print-report" class="button">Print / save PDF</button></div><p id="export-note" class="muted small"></p></article></section>
+  </main>
+</div>
+<footer>ACCI-DECODE · Concept product preview <span>All values and map geometry are synthetic. Not for forensic conclusions.</span></footer>
+<script src="app.js"></script>
+</body>
+</html>
